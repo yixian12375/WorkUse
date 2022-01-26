@@ -1,0 +1,5 @@
+show etherchannel load-balance
+clear counters
+
+show etherchannel load-balance
+port-channel load-balance src-dst-ip

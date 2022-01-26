@@ -1,0 +1,2 @@
+router ospf [number]
+auto-cost reference-bandwith [(default:100)]
