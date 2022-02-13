@@ -1,0 +1,28 @@
+[elect session PVST+]
+1.chose root bridge
+ session smallest mac (smallest)
+2.chose root port
+ session: root cost -> bridge id -> port id (smallest)
+3.chose designed port and blocked
+ session: root cost -> bridge id -> port id (smallest)
+
+[change elect]
+conf t
+spanning-tree vlan $$$ priority [4096's increments incluse 0]  (smallest)
+spanning-tree vlan $$$ cost $$$ (smallest)
+ 
+[loop/root/bpdu guard]
+bpdu guard: use with portfst in dst ex:PC
+ conf t
+ int $$$
+  spanning-tree bpduguard enable
+loop guard: use in root port or second root port
+ conf t
+ spanning-tree loopguard default (conf)
+ spanning-tree guard loop (int)
+root guard: use in loop guard port else port
+ conf t
+ spanning-tree guard root (int)
+
+[check note]
+sh spanning-tree

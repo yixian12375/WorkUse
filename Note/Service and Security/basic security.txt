@@ -1,0 +1,56 @@
+[basic configure]
+conf t
+enable password 123456
+enable secret cisco123
+line console 0
+ password ciscoconsole
+ login
+ exec-timeout 5									!配置 timeout 5 分鐘，自動登出
+ ex
+line vty 0 4
+ password ciscovty
+ login
+ exec-timeout 5
+ ex
+service password-encryption						!配置明文密碼加密
+
+[telnet ssh]
+conf t
+enable secret cisco123
+line vty 0 4
+ password cisco
+ login
+ end
+conf t
+ip domain name cisco.com
+username user1 secret cisco123
+crypto key generate rsa modules 2048			!產生 rsa 非對稱式金鑰
+ip ssh version 2!								!只接受 SSH Version 2 連線
+line vty 0 4									!建立 5 個同時連線數
+ transport input ssh 							!只允許 ssh 協定進入
+ login local									!登入時檢查本機使用者帳號
+ end
+
+[ACL limit access]
+access-list 1 permit host 10.1.1.100
+access-list 1 deny any log
+line vty 0 4
+ access-list1 in
+ ex
+
+[login banner]
+banner login #Access for ahthorized user only#
+
+[login block]
+login on-success log
+login 0n-failure log
+login block-for 60 attempts 3 within 15 		!在 15 秒內失敗 3 次鎖定 60 秒
+
+
+[note]
+sh run | include enable
+sh run | i s line
+sh ssh
+sh users
+sh login
+ 

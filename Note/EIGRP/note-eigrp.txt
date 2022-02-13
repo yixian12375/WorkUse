@@ -1,0 +1,58 @@
+[rule]
+BW = 10^7/interface bandwith
+delay = interface delay(usec)/10
+Metric = (BW+delay)*256
+k1,k3=1 ohters=0
+
+[eigrp]
+conf t
+router eigrp 1
+ eigrp router-id 1.1.1.1 
+ network 10.1.1.0 0.0.0.255
+ network 192.168.1.128 0.0.0.127
+ ex
+
+[security and hold time]
+key chain MYchain
+ key 1
+  key-string Mykey
+  ex
+ ex
+int e0/0
+ ip hello-interval eigrp 1 5
+ ip hold time eigrp 1 30
+ ip authentication key-chain eigrp MYchain
+ ip authentication mode eigrp md5
+ ex
+
+[summary]
+router eigrp 1
+no auto-summary
+summary-matric 192.168.0.0 255.255.0.0 100 100 1 1 1 distance 50
+
+[leak map]
+access-list 1 permit 192.168.1.0 0.0.0.255
+route-map Eicgrp-leak
+ match ip address 1
+ exit
+int e0/0
+ ip summary-address eigrp 1 192.168.0.0 255.255.0.0 leak-map Eicgrp-leak
+
+[stub]
+router eigrp 1
+ eigrp stub
+ 
+[name mode]
+router eigrp cisco
+ address-family ipv4 unicast auto 1
+ eigrp router-id 1.1.1.1 
+ network 10.1.1.0 0.0.0.255
+ network 192.168.1.128 0.0.0.127
+
+[note]
+sh ip eigrp neighbor
+sh ip eigrp topology
+sh ip route
+
+
+

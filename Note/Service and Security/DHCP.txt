@@ -1,0 +1,53 @@
+[process]
+1.client->(discover)->server
+2.server->(offer)->client
+3.client->(request)->server
+4.server->(ack)->client
+
+[IPv4DHCPserver]
+ip dhcp excluded-address 10.1.1.1 10.1.1.50
+ip dhcp pool BRANCH
+ network 10.1.1.0 255.255.255.0
+ dns server 8.8.8.8 168.95.1.1
+ default-router 10.1.1.1 (client DG)
+ domain-name cisco.com
+ lease 0 12 (days [hours [minutes] ] | infinite)
+ 
+[IPv4DHCPclient]
+conf t
+int $$$
+ ip address dhcp
+
+[IPv4 rely agent] 
+ conf t
+ ip helper-address 172.16.100.100 (from DG point to server)
+ 
+[snooping] 
+conf t
+ip dhcp snooping
+ip dhcp snooping vlan $$$
+int $$$
+ ip dhcp snooping trust
+int ran $$$
+ ip dhcp snooping limit rate 10
+
+[note]
+sh ip dhcp biding
+debug ip dhcp server packet detail
+debug dhcp detail
+sh dhcp lease (DG problem)
+
+[debug]
+1.rely agnet
+2.default-router
+3.ip route
+4.excluded-address
+5.dhcp network
+
+
+
+
+
+
+
+

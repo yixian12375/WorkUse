@@ -1,0 +1,28 @@
+[server]
+sh clock
+conf t
+clock timezone Taipei 8
+end
+clock set [hh:mm:ss d M YYYY]
+conf t
+ntp server
+end
+clock update-calender
+sh clock detail
+sh calender
+sh control-plane host open-ports  !顯示系統啟用的服務(NTP)和 UDP 123 Port
+sh ntp associtions
+sh ntp status
+
+[client]
+sh clock
+debug ntp events
+conf t
+clock timezone Taipei 8
+ntp server (server IP)
+end
+sh ntp associtions
+sh ntp status
+undebug all
+
+

@@ -1,0 +1,21 @@
+[basic config]
+conf t
+int ran [$$$-$$$/$$$,$$$]
+ channel-group $$$ mode [on/active/passive/disirable/auto]  !!!LACP:active/passive PAGP:autodisirable
+ ex
+int port-channel $$$
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+
+[load-balance]
+port-channel load-balance $$$
+
+ 
+[check note]
+1.sh etherchannel summary
+2.sh etherchannel port
+3.sh interfaces port-channel $$$
+4.sh interfaces trunk 
+
+sh etherchannel port-channel
+sh etherchannel load-balance

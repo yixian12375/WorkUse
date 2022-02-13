@@ -1,0 +1,63 @@
+[HSRP]
+[R1]
+conf t
+int $$$(inside port)
+ stanby 10 ip 10.1.10.254 								!設定HSRP組10的虛擬IP
+ stanby 10 priority 150									!設定 HSRP 組 10 (100 default)的優先權(highest)
+ stanby 10 preempt										!設定 HSRP 組 10 的搶佔
+ stanby 10 authentication md5 key-string cisco123 
+ stanby 10 track $$$(outside port) 60					!if $$$port down priority 減少60
+ stanby 20 ip 10.1.10.254 								!設定HSRP組20的虛擬IP
+ stanby 20 priority 100									!設定 HSRP 組 20 (100 default)的優先權(highest)
+ stanby 20 preempt										!設定 HSRP 組 20 的搶佔
+ stanby 20 authentication md5 key-string cisco123
+ stanby 20 track $$$(outside port) 60					!if $$$port down priority 減少60
+ 
+[R2]
+conf t
+int $$$(inside port)
+ stanby 10 ip 10.1.10.254 	
+ stanby 10 priority 100									!notice
+ stanby 10 preempt			
+ stanby 10 authentication md5 key-string cisco123
+ stanby 10 track $$$(outside port) 60	
+ stanby 20 ip 10.1.10.254 	
+ stanby 20 priority 150									!notice
+ stanby 20 preempt			
+ stanby 20 authentication md5 key-string cisco123 
+ stanby 20 track $$$(outside port) 60	
+ 
+ 
+[VRRP]
+[R1]
+conf t
+int $$$(inside port)
+ vrrp 10 ip 10.1.10.254 								!設定VRRP組10的虛擬IP
+ vrrp 10 priority 150									!設定 VRRP 組 10 (100 default)的優先權(highest)
+ vrrp 10 preempt										!設定 VRRP 組 10 的搶佔
+ vrrp 10 authentication text cisco123 
+ vrrp 20 ip 10.1.10.254 								!設定VRRP組20的虛擬IP
+ vrrp 20 priority 100									!設定 VRRP 組 20 (100 default)的優先權(highest)
+ vrrp 20 preempt										!設定 VRRP 組 20 的搶佔
+ vrrp 20 authentication text cisco123
+ 
+[R2]
+conf t
+int $$$(inside port)
+ vrrp 10 ip 10.1.10.254 	
+ vrrp 10 priority 100									!notice
+ vrrp 10 preempt			
+ vrrp 10 authentication text cisco123
+ vrrp 20 ip 10.1.10.254 	
+ vrrp 20 priority 150									!notice
+ vrrp 20 preempt			
+ vrrp 20 authentication text cisco1233 
+ 
+ 
+ 
+[note]
+sh stanby
+sh vrrp
+
+
+

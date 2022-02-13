@@ -1,0 +1,44 @@
+[opration conf]
+en
+erasse startup-config
+delete flash:/vlan.dat
+reload
+write/copy running-config startup-config
+
+[backup and restore]
+write
+sh startup-config
+copy startup-config tftp:
+(remote IP)
+(IOS Image File)
+copy tftp: flash:
+(remote IP)
+(IOS Image File)
+sh falsh
+more flash: /(IOS Image File)
+configure replacce flash:/(IOS Image File) list   !讀取(IOS Image File)同步到running-config 並列出同步的指令及復原的指令
+write
+
+[upgade]
+sh version (notice IOS version and IOS Image File)
+copy flash: tftp:
+(IOS Image File)
+(remote IP)
+(IOS Image File)
+format flash:
+copy tftp: falsh:
+(remote ip)
+(IOS Image File)
+reload
+sh version
+
+
+
+
+
+
+
+
+
+
+

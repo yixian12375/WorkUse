@@ -1,0 +1,67 @@
+[Access]
+conf t
+vlan $$$
+ name $$$
+ ex
+do sh vlan brief
+int $$$
+ switchport mode access
+ switchport access vlan $$$
+ 
+[Turnk L2]
+conf t
+vlan $$$
+ name $$$
+ ex
+do sh vlan brief
+int $$$
+ switchport mode trunk
+ do sh interfaces trunk
+ 
+[Turnk L3]
+conf t
+vlan $$$
+ name $$$
+ ex
+do sh vlan brief
+int $$$
+ switchport trunk encapsulation dot1Q
+ switchport mode trunk
+ do sh interfaces trunk
+
+[Allowed]
+conf t
+int $$$
+ switchport trunk allowed vlan $$$
+ switchport trunk allowed vlan [add/remove/all/none/except]
+ do sh interfaces trunk
+
+[Native]
+conf t
+int $$$
+ switchport trunk native vlan $$$
+ do sh interfaces trunk
+
+[VTP]
+conf t
+vtp mode [server/client/transparent]
+vtp version [1/2/3]
+vtp domain $$$
+vtp password $$$ [/hidden]
+vtp pruning
+do sh vtp status
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

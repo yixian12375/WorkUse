@@ -1,0 +1,26 @@
+[2 way same GREtunnel]
+conf t
+int tunnel 0
+ ip add 192.168.2.1 255.255.255.0 	!虛擬IP
+ tunnel mode gre ip					!Tunnel 模式為 GRE IP(預設)
+ tunnel source 209.165.201.1 		!真實IP來源
+ tunnel destination 209.165.201.130 !真實IP目的地
+ 
+[IPsec VPN]
+conf t
+crypto isakmp policy 10 	!配置 IPSsec IKE Phase 1
+ encr aes 					!AES 加密
+ hash md5					!MD5 雜湊
+ authentication pre-share	!預先共用密碼驗證
+ group 2					!金鑰交換 1204 bits
+ exit
+crypto isakmp key cisco address 0.0.0.0					!IKE Phase 驗證密碼
+crypto ipsec transform-set TRANS esp-aes esp-sha-hamc	!配置 IPSsec IKE Phase 2
+ mode transport
+ exit
+crypto ipsec profile VPN								!配置 IPSec profile
+ set transform-set TRANS								!關聯到 TRANS transform-set
+ exit
+int tunnel 0
+ tunnel protection ipsec profile VPN					!套用 IPSec VPN 於 Tunnel 介面
+ end

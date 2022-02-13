@@ -1,0 +1,48 @@
+[static]
+conf t
+int $$$
+ ip nat inside
+int $$$
+ ip nat outside
+ ex
+ip nat inside source static (inside local) (inside global)
+
+[PAT]
+conf t
+int $$$
+ ip nat inside
+int $$$
+ ip nat outside
+ ex
+access-list 10 permit 10.1.0.0 0.0.255.255 
+ip nat inside source list $$$ int e0/1 overload
+
+[Dynamic]
+conf t
+int $$$
+ ip nat inside
+int $$$
+ ip nat outside
+ ex
+access-list 10 permit 10.1.0.0 0.0.255.255 
+ip nat pool (name) 209.165.201.6 209.165.201.10 netmask 255.255.255.0
+ip nat inside source list $$$ pool (name) overload
+
+[NAT VI]
+conf t
+int $$$
+ no ip nat inside
+ ip nat enable
+int $$$
+ ip nat enable
+ ex
+ip nat source list $$$ int e0/1 overload
+
+[note]
+sh ip nat translation
+
+
+
+
+
+
